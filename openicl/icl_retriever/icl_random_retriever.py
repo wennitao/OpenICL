@@ -43,13 +43,25 @@ class RandomRetriever(BaseRetriever):
         super().__init__(dataset_reader, ice_separator, ice_eos_token, prompt_eos_token, ice_num, index_split,
                          test_split, accelerator)
         self.seed = seed
+        self.test_idx = np.random.randint (0, len (self.test_ds))
+        print (self.test_idx)
+
+    # def retrieve(self):
+    #     np.random.seed(self.seed)
+    #     num_idx = len(self.index_ds)
+    #     rtr_idx_list = []
+    #     logger.info("Retrieving data for test set...")
+    #     for _ in trange(len(self.test_ds), disable=not self.is_main_process):
+    #         idx_list = np.random.choice(num_idx, self.ice_num, replace=False).tolist()
+    #         rtr_idx_list.append(idx_list)
+    #     return rtr_idx_list
 
     def retrieve(self):
-        np.random.seed(self.seed)
+        # np.random.seed(self.seed)
         num_idx = len(self.index_ds)
         rtr_idx_list = []
         logger.info("Retrieving data for test set...")
-        for _ in trange(len(self.test_ds), disable=not self.is_main_process):
+        for _ in trange(20, disable=not self.is_main_process):
             idx_list = np.random.choice(num_idx, self.ice_num, replace=False).tolist()
             rtr_idx_list.append(idx_list)
         return rtr_idx_list

@@ -5,6 +5,7 @@ from typing import List, Union, Optional, Tuple, Dict
 from openicl import DatasetReader, PromptTemplate
 from openicl.utils.check_type import _check_str
 from accelerate import Accelerator
+from openicl.icl_dataset_reader import load_partial_dataset
 
 
 class BaseRetriever:
@@ -55,6 +56,8 @@ class BaseRetriever:
                 )
         else:
             self.index_ds = self.dataset_reader.dataset[self.index_split]
+            # Force test size = 1
+            # self.test_ds = load_partial_dataset(self.dataset_reader.dataset[self.test_split], size=1)
             self.test_ds = self.dataset_reader.dataset[self.test_split]
 
             if self.accelerator is not None:
@@ -62,6 +65,7 @@ class BaseRetriever:
                     num_shards=self.accelerator.num_processes,
                     index=self.accelerator.process_index
                 )
+        self.test_idx = 0
 
     def retrieve(self) -> List[List]:
         """

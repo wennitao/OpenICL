@@ -22,3 +22,7 @@ build/
 docs/build/
 *.xml
 *.iml
+
+triviaQA/
+gsm8k/
+*.json
